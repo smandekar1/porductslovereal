@@ -40,12 +40,10 @@ def homepage():
     return html
 
 
-@app.route('/contact')
-def contact():
-
+@app.route('/contactnew')
+def contactnew():
     html = render_template('contactnew.html')
     return html
-
 
 @app.route('/books')
 def books():
@@ -57,7 +55,13 @@ def post_user():
     user = User(request.form['username'], request.form['email'])
     db.session.add(user)
     db.session.commit()
-    return redirect(url_for('contact'))
+    return redirect(url_for('contactnew'))
+
+@app.route('/products')
+def products():
+
+    html = render_template('products.html')
+    return html
 
 
 if __name__ == '__main__':
