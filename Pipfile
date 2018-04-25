@@ -10,6 +10,7 @@ Flask = "==0.10.1"
 "Jinja2" = "==2.8"
 "psycopg2-binary" = "*"
 dj-database-url = "*"
+Flask-SQLAlchemy = "==2.3.2"
 
 [requires]
 python_version = "3.5"
