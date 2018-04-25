@@ -45,12 +45,14 @@ def contact():
 
 @app.route('/books')
 def books():
-
+    html = render_template('contactnew.html')
+    return html
 
 
 
 
 if __name__ == '__main__':
+    
     db.create_all()
 
     port = int(os.environ.get("PORT", 33507))
