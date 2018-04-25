@@ -28,7 +28,7 @@ class User(db.Model):
         return '<User %r>' % self.username
 
        
-    return render_template('books.html', title=contact)
+    
 
 @app.route('/')
 def homepage():
@@ -45,7 +45,7 @@ def contact():
 
 @app.route('/books')
 def books():
-    html = render_template('contactnew.html')
+    html = render_template('books.html', title=contact)
     return html
 
 
