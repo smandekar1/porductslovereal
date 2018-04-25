@@ -57,7 +57,7 @@ def post_user():
     user = User(request.form['username'], request.form['email'])
     db.session.add(user)
     db.session.commit()
-    return redirect(url_for('homepagenew'))
+    return redirect(url_for('contact'))
 
 
 if __name__ == '__main__':
