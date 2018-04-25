@@ -1,0 +1,17 @@
+[[source]]
+name = "pypi"
+verify_ssl = true
+url = "https://pypi.python.org/simple"
+
+[packages]
+gunicorn = "==19.4.5"
+requests = "==2.9.1"
+Flask = "==0.10.1"
+"Jinja2" = "==2.8"
+"psycopg2-binary" = "*"
+dj-database-url = "*"
+
+[requires]
+python_version = "3.5"
+
+[dev-packages]
