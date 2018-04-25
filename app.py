@@ -1,59 +1,45 @@
 from flask import Flask, render_template
-
 from datetime import datetime
-import foo
-
 
 
 
 app = Flask(__name__)
 
+app.debug = True
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:admin@localhost/flaskhawkes'
+app.config.from_object(Config)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+ 
+DATABASE_URL = os.environ['DATABASE_URL']
+conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+
+class User(db.Model):
+    __tablename__ = 'user'
+    id = db.Column('user_id', db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True)
+    email = db.Column(db.String(120), unique=True)
+
+    def __init__(self, username, email):
+        self.username = username
+        self.email = email
+
+    def __repr__(self):
+        return '<User %r>' % self.username
+
+       
+    return render_template('books.html', title=contact)
+
 @app.route('/')
 def homepage():
-    the_time = datetime.now().strftime("%A, %d %b %Y %l:%M %p")
-    the_quakes = foo.get_quake_data();
-
-    # iterate through each quake, give them a "latlng" attribute
-    # and then a separate Google Map URL
-    for q in the_quakes:
-        q['latlng'] = q['latitude'] + ',' + q['longitude']
-        q['gmap_url'] = foo.prepare_static_gmap_url(q['latlng'],
-                                                widthheight='200x200',
-                                                zoom=5)
-
-    # get all the locations from each marker as a single list of lat,lng strings
-    locs = [q['latlng'] for q in the_quakes]
-    world_map_url = foo.prepare_static_gmap_url(locs, widthheight='800x300')
-
-    html = render_template('homepagenew.html',
-                            time=the_time, quakes=the_quakes,
-                            world_map_url=world_map_url)
+    html = render_template('homepagenew.html')
     return html
 
 
-
-
-#new area
 @app.route('/contact')
 def contact():
-    the_time = datetime.now().strftime("%A, %d %b %Y %l:%M %p")
-    the_quakes = foo.get_quake_data();
 
-    # iterate through each quake, give them a "latlng" attribute
-    # and then a separate Google Map URL
-    for q in the_quakes:
-        q['latlng'] = q['latitude'] + ',' + q['longitude']
-        q['gmap_url'] = foo.prepare_static_gmap_url(q['latlng'],
-                                                widthheight='200x200',
-                                                zoom=5)
-
-    # get all the locations from each marker as a single list of lat,lng strings
-    locs = [q['latlng'] for q in the_quakes]
-    world_map_url = foo.prepare_static_gmap_url(locs, widthheight='800x300')
-
-    html = render_template('contactnew.html',
-                            time=the_time, quakes=the_quakes,
-                            world_map_url=world_map_url)
+    html = render_template('contactnew.html')
     return html
 
 
@@ -61,10 +47,14 @@ def contact():
 def books():
 
 
-       
-    return render_template('books.html', title=contact)
 
 
 
 if __name__ == '__main__':
-    app.run(debug=True, use_reloader=True)
+    db.create_all()
+
+    port = int(os.environ.get("PORT", 33507))
+    app.run(
+        host="0.0.0.0",
+        port=port,
+    )
