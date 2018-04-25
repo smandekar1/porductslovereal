@@ -6,6 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask import request, redirect, url_for, render_template
 from config import Config
 
+#s
 app = Flask(__name__)
 
 app.debug = True
